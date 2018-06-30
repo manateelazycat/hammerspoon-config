@@ -1,4 +1,4 @@
-# What is?
+# What is this?
 This is my configuration file for Hammerspoon window manager.
 You can copy this file to ~/.hammerspoon directory and click reload-config of menu to load it.
 

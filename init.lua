@@ -14,6 +14,7 @@ local key2App = {
     j = 'Emacs',
     k = 'Google Chrome',
     l = 'Finder',
+    n = '网易云音乐',
 }
 
 -- Toggle an application between being the frontmost app, and being hidden
@@ -96,6 +97,10 @@ hs.hotkey.bind(hyper, ";", function()
 end)
 
 hs.hotkey.bind(hyper, ",", grid.show)
+
+hs.hotkey.bind(hyper, ".", function()
+    hs.alert.show(window.focusedWindow():title())
+end)
 
 hotkey.bind(hyper, '/', function()
     hints.windowHints()

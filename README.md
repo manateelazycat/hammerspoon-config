@@ -15,6 +15,7 @@ You can copy this file to ~/.hammerspoon directory and click reload-config of me
 | Ctrl + Command + J | Show/Hide Emacs                    |
 | Ctrl + Command + K | Show/Hide Google Chrome            |
 | Ctrl + Command + L | Show/Hide Finder                   |
+| Ctrl + Command + N | Show/Hide Netease Music            |
 | Ctrl + Command + ; | Close window                       |
 | Ctrl + Command + , | Resize window with screen grid     |
 | Ctrl + Command + / | Switch window like vimium          |

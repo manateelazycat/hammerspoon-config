@@ -15,6 +15,9 @@ local key2App = {
     k = 'Google Chrome',
     l = 'Finder',
     n = '网易云音乐',
+    s = '系统偏好设置',
+    w = '微信（会话）',
+    e = '企业微信',
 }
 
 -- Toggle an application between being the frontmost app, and being hidden

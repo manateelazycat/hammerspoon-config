@@ -16,6 +16,9 @@ You can copy this file to ~/.hammerspoon directory and click reload-config of me
 | Ctrl + Command + K | Show/Hide Google Chrome            |
 | Ctrl + Command + L | Show/Hide Finder                   |
 | Ctrl + Command + N | Show/Hide Netease Music            |
+| Ctrl + Command + S | Show/Hide System Settings          |
+| Ctrl + Command + W | Show/Hide WeChat                   |
+| Ctrl + Command + E | Show/Hide Enterprise WeChat        |
 | Ctrl + Command + ; | Close window                       |
 | Ctrl + Command + , | Resize window with screen grid     |
 | Ctrl + Command + / | Switch window like vimium          |

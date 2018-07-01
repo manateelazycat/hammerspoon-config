@@ -6,7 +6,7 @@ You can copy this file to ~/.hammerspoon directory and click reload-config of me
 
 | Key                | Description                        |
 | --------           | :-----                             |
-| Ctrl + Command + I | Maximized window                   |
+| Ctrl + Command + I | Toggle window maximized or normal  |
 | Ctrl + Command + U | Resize window to center of screen  |
 | Ctrl + Command + Y | Resize window left half of screen  |
 | Ctrl + Command + O | Resize window right half of screen |

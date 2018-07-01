@@ -1,4 +1,5 @@
 hs.loadSpoon("WinWin")
+hs.loadSpoon("WindowHalfsAndThirds")
 
 local hyper = {'ctrl', 'cmd'}
 
@@ -92,10 +93,6 @@ end
 -- Window operations.
 hs.hotkey.bind(hyper, 'U', resizeToCenter)
 
-hs.hotkey.bind(hyper, 'I', function()
-    hs.grid.maximizeWindow()
-end)
-
 hs.hotkey.bind(hyper, "Y", function()
     window.focusedWindow():moveToUnit(layout.left50)
 end)
@@ -146,6 +143,9 @@ hs.hotkey.bind(hyper, "3", function()
 end)
 
 -- Binding key to start plugin.
+spoon.WindowHalfsAndThirds:bindHotkeys({
+    max_toggle = {hyper, "I"},
+})
 
 -- Reload config.
 hs.hotkey.bind(hyper, "'", function ()

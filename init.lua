@@ -1,3 +1,5 @@
+hs.loadSpoon("WinWin")
+
 local hyper = {'ctrl', 'cmd'}
 
 local alert = require 'hs.alert'
@@ -18,20 +20,24 @@ local key2App = {
     s = '系统偏好设置',
     w = '微信（会话）',
     e = '企业微信',
+    d = 'Dash',
 }
 
 -- Toggle an application between being the frontmost app, and being hidden
 function toggle_application(_app)
-    -- finds a running applications
+    -- Finds a running applications
     local app = application.find(_app)
 
     if not app then
-        -- application not running, launch app
+        -- Application not running, launch app
         application.launchOrFocus(_app)
+
+	-- It's handy move cursor after focus
+	spoon.WinWin:centerCursor()
         return
     end
 
-    -- application running, toggle hide/unhide
+    -- Application running, toggle hide/unhide
     local mainwin = app:mainWindow()
     if mainwin then
         if true == app:isFrontmost() then
@@ -40,14 +46,20 @@ function toggle_application(_app)
             mainwin:application():activate(true)
             mainwin:application():unhide()
             mainwin:focus()
+
+	    -- It's handy move cursor after focus
+	    spoon.WinWin:centerCursor()
         end
     else
-        -- no windows, maybe hide
+        -- No windows, maybe hide
         if true == app:hide() then
-            -- focus app
+            -- Focus app
             application.launchOrFocus(_app)
+
+	    -- It's handy move cursor after focus
+	    spoon.WinWin:centerCursor()
         else
-            -- nothing to do
+            -- Nothing to do
         end
     end
 end
@@ -77,6 +89,7 @@ function resizeToCenter()
    win:setFrame(f)
 end
 
+-- Window operations.
 hs.hotkey.bind(hyper, 'U', resizeToCenter)
 
 hs.hotkey.bind(hyper, 'I', function()
@@ -109,27 +122,32 @@ hotkey.bind(hyper, '/', function()
     hints.windowHints()
 end)
 
+-- Start or focus application.
 for key, app in pairs(key2App) do
     hotkey.bind(hyper, key, function()
         toggle_application(app)
     end)
 end
 
+-- Move application to screen.
 hs.hotkey.bind(hyper, "1", function()
-  local win = hs.window.focusedWindow()
-  moveto(win, 1)
+    local win = hs.window.focusedWindow()
+    moveto(win, 1)
 end)
 
 hs.hotkey.bind(hyper, "2", function()
-  local win = hs.window.focusedWindow()
-  moveto(win, 2)
+    local win = hs.window.focusedWindow()
+    moveto(win, 2)
 end)
 
 hs.hotkey.bind(hyper, "3", function()
-  local win = hs.window.focusedWindow()
-  moveto(win, 3)
+    local win = hs.window.focusedWindow()
+    moveto(win, 3)
 end)
 
+-- Binding key to start plugin.
+
+-- Reload config.
 hs.hotkey.bind(hyper, "'", function ()
     hs.reload()
 end)

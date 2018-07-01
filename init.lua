@@ -1,5 +1,9 @@
 hs.loadSpoon("WinWin")
+hs.loadSpoon("WindowGrid")
 hs.loadSpoon("WindowHalfsAndThirds")
+hs.loadSpoon("SpoonInstall")
+
+Install=spoon.SpoonInstall
 
 local hyper = {'ctrl', 'cmd'}
 
@@ -109,7 +113,7 @@ hs.hotkey.bind(hyper, ";", function()
     window.focusedWindow():close()
 end)
 
-hs.hotkey.bind(hyper, ",", grid.show)
+-- hs.hotkey.bind(hyper, ",", grid.show)
 
 hs.hotkey.bind(hyper, ".", function()
     hs.alert.show(window.focusedWindow():title())
@@ -143,9 +147,20 @@ hs.hotkey.bind(hyper, "3", function()
 end)
 
 -- Binding key to start plugin.
-spoon.WindowHalfsAndThirds:bindHotkeys({
-    max_toggle = {hyper, "I"},
-})
+Install:andUse("WindowHalfsAndThirds",
+               {
+                 config = {
+                   use_frame_correctness = true
+                 },
+                 hotkeys = {max_toggle = {hyper, "I"}}
+               })
+
+Install:andUse("WindowGrid",
+               {
+                 config = { gridGeometries = { { "6x4" } } },
+                 hotkeys = {show_grid = {hyper, ","}},
+                 start = true
+               })
 
 -- Reload config.
 hs.hotkey.bind(hyper, "'", function ()

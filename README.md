@@ -19,11 +19,11 @@ You can copy this file to ~/.hammerspoon directory and click reload-config of me
 | Ctrl + Command + S | Show/Hide System Settings          |
 | Ctrl + Command + W | Show/Hide WeChat                   |
 | Ctrl + Command + E | Show/Hide Enterprise WeChat        |
+| Ctrl + Command + D | Show/Hide Dash                     |
 | Ctrl + Command + ; | Close window                       |
 | Ctrl + Command + , | Resize window with screen grid     |
 | Ctrl + Command + / | Switch window like vimium          |
 | Ctrl + Command + 1 | Move window to screen 1            |
 | Ctrl + Command + 2 | Move window to screen 2            |
-| Ctrl + Command + 3 | Move window to screen 3            |
 
 Happy hacking!

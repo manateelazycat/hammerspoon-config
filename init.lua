@@ -84,7 +84,7 @@ function toggleApplication(appPath)
     end
 end
 
-moveto = function(win, n)
+moveToScreen = function(win, n)
   local screens = hs.screen.allScreens()
   if n > #screens then
     hs.alert.show("No enough screens " .. #screens)
@@ -145,11 +145,11 @@ end
 
 -- Move application to screen.
 hs.hotkey.bind(hyper, "1", function()
-    moveto(hs.window.focusedWindow(), 1)
+    moveToScreen(hs.window.focusedWindow(), 1)
 end)
 
 hs.hotkey.bind(hyper, "2", function()
-    moveto(hs.window.focusedWindow(), 2)
+    moveToScreen(hs.window.focusedWindow(), 2)
 end)
 
 -- Binding key to start plugin.

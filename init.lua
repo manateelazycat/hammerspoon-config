@@ -21,17 +21,18 @@ hs.window.animationDuration = 0	-- don't waste time on animation when resize win
 
 -- Key to launch application.
 local key2App = {
-    h = 'iterm',
-    j = 'Emacs',
-    k = 'Google Chrome',
-    l = 'Finder',
-    n = '网易云音乐',
-    s = '系统偏好设置',
-    w = '微信（会话）',
-    e = '企业微信',
-    d = 'Dash',
+    h = '/Applications/iTerm.app',
+    j = '/Applications/Emacs.app',
+    k = '/Applications/Google Chrome.app',
+    l = '/System/Library/CoreServices/Finder.app',
+    n = '/Applications/NeteaseMusic.app',
+    s = '/Applications/System Preferences.app',
+    w = '/Applications/WeChat.app',
+    e = '/Applications/企业微信.app',
+    d = '/Applications/Dash.app',
 }
 
+-- Handle cursor focus and application's screen manage.
 function applicationWatcher(appName, eventType, appObject)
    -- Move cursor to center of application when application activated.
    -- Then don't need move cursor between screens.
@@ -43,15 +44,26 @@ end
 appWatcher = hs.application.watcher.new(applicationWatcher)
 appWatcher:start()
 
+function findApplication(appPath)
+   local apps = application.runningApplications()
+   for i = 1, #apps do
+      local app = apps[i]
+      if app:path() == appPath then
+	 return app
+      end
+   end
+
+   return nil
+end
+
 -- Toggle an application between being the frontmost app, and being hidden
-function toggle_application(_app)
-    -- Finds a running applications
-    local app = application.find(_app)
+function toggleApplication(appPath)
+    local app = findApplication(appPath)
 
     if not app then
         -- Application not running, launch app
-        application.launchOrFocus(_app)
-	return
+        application.launchOrFocus(appPath)
+    	return
     end
 
     -- Application running, toggle hide/unhide
@@ -63,13 +75,12 @@ function toggle_application(_app)
             mainwin:application():activate(true)
             mainwin:application():unhide()
             mainwin:focus()
-	end
+    	end
     else
-        -- No windows, maybe hide
+        -- Start application if application is hide.
         if true == app:hide() then
-            -- Focus app
-            application.launchOrFocus(_app)
-	end
+            application.launchOrFocus(appPath)
+    	end
     end
 end
 
@@ -117,10 +128,8 @@ hs.hotkey.bind(hyper, ";", function()
     window.focusedWindow():close()
 end)
 
--- hs.hotkey.bind(hyper, ",", grid.show)
-
 hs.hotkey.bind(hyper, ".", function()
-    hs.alert.show(window.focusedWindow():title())
+    hs.alert.show(window.focusedWindow():application():path())
 end)
 
 hotkey.bind(hyper, '/', function()
@@ -130,7 +139,7 @@ end)
 -- Start or focus application.
 for key, app in pairs(key2App) do
     hotkey.bind(hyper, key, function()
-        toggle_application(app)
+        toggleApplication(app)
     end)
 end
 

@@ -16,6 +16,10 @@ local hotkey = require 'hs.hotkey'
 local layout = require 'hs.layout'
 local window = require 'hs.window'
 
+-- Init.
+hs.window.animationDuration = 0	-- don't waste time on animation when resize window
+
+-- Key to launch application.
 local key2App = {
     h = 'iterm',
     j = 'Emacs',
@@ -28,6 +32,17 @@ local key2App = {
     d = 'Dash',
 }
 
+function applicationWatcher(appName, eventType, appObject)
+   -- Move cursor to center of application when application activated.
+   -- Then don't need move cursor between screens.
+   if (eventType == hs.application.watcher.activated) then
+      spoon.WinWin:centerCursor()
+   end
+end
+
+appWatcher = hs.application.watcher.new(applicationWatcher)
+appWatcher:start()
+
 -- Toggle an application between being the frontmost app, and being hidden
 function toggle_application(_app)
     -- Finds a running applications
@@ -36,10 +51,7 @@ function toggle_application(_app)
     if not app then
         -- Application not running, launch app
         application.launchOrFocus(_app)
-
-	-- It's handy move cursor after focus
-	spoon.WinWin:centerCursor()
-        return
+	return
     end
 
     -- Application running, toggle hide/unhide
@@ -51,21 +63,13 @@ function toggle_application(_app)
             mainwin:application():activate(true)
             mainwin:application():unhide()
             mainwin:focus()
-
-	    -- It's handy move cursor after focus
-	    spoon.WinWin:centerCursor()
-        end
+	end
     else
         -- No windows, maybe hide
         if true == app:hide() then
             -- Focus app
             application.launchOrFocus(_app)
-
-	    -- It's handy move cursor after focus
-	    spoon.WinWin:centerCursor()
-        else
-            -- Nothing to do
-        end
+	end
     end
 end
 
@@ -132,18 +136,11 @@ end
 
 -- Move application to screen.
 hs.hotkey.bind(hyper, "1", function()
-    local win = hs.window.focusedWindow()
-    moveto(win, 1)
+    moveto(hs.window.focusedWindow(), 1)
 end)
 
 hs.hotkey.bind(hyper, "2", function()
-    local win = hs.window.focusedWindow()
-    moveto(win, 2)
-end)
-
-hs.hotkey.bind(hyper, "3", function()
-    local win = hs.window.focusedWindow()
-    moveto(win, 3)
+    moveto(hs.window.focusedWindow(), 2)
 end)
 
 -- Binding key to start plugin.

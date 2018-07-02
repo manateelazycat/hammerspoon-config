@@ -33,11 +33,15 @@ local key2App = {
 }
 
 -- Handle cursor focus and application's screen manage.
+startAppPath = ""
 function applicationWatcher(appName, eventType, appObject)
    -- Move cursor to center of application when application activated.
    -- Then don't need move cursor between screens.
    if (eventType == hs.application.watcher.activated) then
-      spoon.WinWin:centerCursor()
+       if appObject:path() == startAppPath then
+	  spoon.WinWin:centerCursor()
+	  startAppPath = ""
+       end
    end
 end
 
@@ -58,6 +62,8 @@ end
 
 -- Toggle an application between being the frontmost app, and being hidden
 function toggleApplication(appPath)
+    startAppPath = appPath
+
     local app = findApplication(appPath)
 
     if not app then

@@ -133,7 +133,11 @@ hs.hotkey.bind(hyper, "P", function()
 end)
 
 hs.hotkey.bind(hyper, ";", function()
+    -- Kill current focused window.
     window.focusedWindow():close()
+
+    -- Then focus next window.
+    hs.window.frontmostWindow():focus()
 end)
 
 hs.hotkey.bind(hyper, "-", function()

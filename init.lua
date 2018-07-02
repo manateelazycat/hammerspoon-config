@@ -136,6 +136,10 @@ hs.hotkey.bind(hyper, ";", function()
     window.focusedWindow():close()
 end)
 
+hs.hotkey.bind(hyper, "-", function()
+    hs.application.frontmostApplication():kill()
+end)
+
 hs.hotkey.bind(hyper, ".", function()
     hs.alert.show(window.focusedWindow():application():path())
 end)

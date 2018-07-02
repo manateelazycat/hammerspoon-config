@@ -38,6 +38,7 @@ function applicationWatcher(appName, eventType, appObject)
    -- Move cursor to center of application when application activated.
    -- Then don't need move cursor between screens.
    if (eventType == hs.application.watcher.activated) then
+       -- Just adjust cursor postion if app open by user keyboard.
        if appObject:path() == startAppPath then
 	  spoon.WinWin:centerCursor()
 	  startAppPath = ""
@@ -62,6 +63,7 @@ end
 
 -- Toggle an application between being the frontmost app, and being hidden
 function toggleApplication(appPath)
+    -- Tag app path use for `applicationWatcher'.
     startAppPath = appPath
 
     local app = findApplication(appPath)

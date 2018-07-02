@@ -16,6 +16,21 @@ local hotkey = require 'hs.hotkey'
 local layout = require 'hs.layout'
 local window = require 'hs.window'
 
+-- I don't know how to disable noise global key "Command + Shift +Q" in MacOS.
+-- So i redirect "Command + Shift + Q" to "Ctrl + Command + Shift + Q" for Emacs,
+-- then i make Emacs response "Ctrl + Command + Shift + Q" to implement key binding "Command + Shift + Q".
+local newKeyEvent = require 'hs.eventtap'.event.newKeyEvent
+local usleep = require 'hs.timer'.usleep
+hs.hotkey.new({"cmd", "shift"}, "q", nil, function()
+    if window.focusedWindow():application():path() == "/Applications/Emacs.app" then
+       local app = window.focusedWindow():application()
+
+       newKeyEvent({"ctrl", "cmd", "shift"}, "q", true):post(app)
+       usleep(1000)
+       newKeyEvent({"ctrl", "cmd", "shift"}, "q", false):post(app)
+    end
+end):enable()
+
 -- Init.
 hs.window.animationDuration = 0	-- don't waste time on animation when resize window
 

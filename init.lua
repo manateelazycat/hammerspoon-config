@@ -45,6 +45,7 @@ local key2App = {
     w = '/Applications/WeChat.app',
     e = '/Applications/企业微信.app',
     d = '/Applications/Dash.app',
+    z = '/Applications/Kindle.app',
 }
 
 -- Handle cursor focus and application's screen manage.

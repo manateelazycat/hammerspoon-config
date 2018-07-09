@@ -15,6 +15,10 @@ local hints = require 'hs.hints'
 local hotkey = require 'hs.hotkey'
 local layout = require 'hs.layout'
 local window = require 'hs.window'
+local speech = require 'hs.speech'
+
+-- Init speaker.
+speaker = speech.new()
 
 -- I don't know how to disable noise global key "Command + Shift +Q" in MacOS.
 -- So i redirect "Command + Shift + Q" to "Ctrl + Command + Shift + Q" for Emacs,
@@ -252,8 +256,12 @@ Install:andUse("WindowGrid",
 
 -- Reload config.
 hs.hotkey.bind(hyper, "'", function ()
-    hs.reload()
+		  speaker:speak("Offline to reloading...")
+		  hs.reload()
 end)
 
 -- We put reload notify at end of config, notify popup mean no error in config.
-hs.notify.new({title="Hammerspoon", informativeText="Config reload successful!"}):send()
+hs.notify.new({title="Manatee", informativeText="Andy, I am online!"}):send()
+
+-- Speak something after configuration success.
+speaker:speak("Andy, I am online!")

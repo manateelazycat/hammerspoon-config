@@ -49,6 +49,22 @@ local key2App = {
     z = '/Applications/Kindle.app',
 }
 
+-- Build better app switcher.
+switcher = hs.window.switcher.new(
+   hs.window.filter.new()
+      :setAppFilter('Emacs', {allowRoles = '*', allowTitles = 1}), -- make emacs window show in switcher list
+   {
+      showTitles = false,		-- don't show window title
+      thumbnailSize = 200,		-- window thumbnail size
+      showSelectedThumbnail = false,	-- don't show bigger thumbnail
+      backgroundColor = {0, 0, 0, 0.8}, -- background color
+      highlightColor = {0.3, 0.3, 0.3, 0.8}, -- selected color
+   }
+)
+
+hs.hotkey.bind("alt", "tab", function() switcher:next() end)
+hs.hotkey.bind("alt-shift", "tab", function() switcher:previous() end)
+
 -- Handle cursor focus and application's screen manage.
 startAppPath = ""
 function applicationWatcher(appName, eventType, appObject)

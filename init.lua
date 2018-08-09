@@ -457,19 +457,26 @@ end)
 
 -- Execute v2ray default, fuck GFW.
 local v2rayPath = "/Users/andy/v2ray/v2ray"
-local v2rayTask = hs.task.new(v2rayPath, nil)
-v2rayTask:start()
+local v2rayTask = nil
 
-local function reloadV2ray()
-    hs.notify.new({title="Manatee", informativeText="Reload v2ray"}):send()
-
-    if v2rayTask then
-        v2rayTask.terminate()
+local function stopV2ray()
+    if v2rayTask and v2rayTask:isRunning() then
+        v2rayTask:terminate()
     end
+end
 
+local function startV2ray()
     v2rayTask = hs.task.new(v2rayPath, nil)
     v2rayTask:start()
 end
+
+local function reloadV2ray()
+    stopV2ray()
+    startV2ray()
+
+    hs.notify.new({title="Manatee", informativeText="Reload v2ray"}):send()
+end
+startV2ray()
 
 local v2rayTrayIcon = hs.menubar.new()
 v2rayTrayIcon:setTitle("V2ray")

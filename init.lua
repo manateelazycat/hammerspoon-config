@@ -485,6 +485,9 @@ v2rayTrayIcon:setClickCallback(reloadV2ray)
 
 hs.hotkey.bind(hyper, "]", reloadV2ray)
 
+-- Force system sleep.
+hs.hotkey.bind(hyper, "delete", hs.caffeinate.systemSleep)
+
 -- Reload config.
 hs.hotkey.bind(
     hyper, "'", function ()

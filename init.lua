@@ -160,7 +160,21 @@ function toggleApplication(appPath)
     end
 end
 
+local mouseCircle = nil
+local mouseCircleTimer = nil
+
 function drawMouseCircle()
+    -- Kill previous circle if it still live.
+    circle = mouseCircle
+    timer = mouseCircleTimer
+
+    if circle then
+        circle:delete()
+        if timer then
+            timer:stop()
+        end
+    end
+
     -- Get mouse point.
     mousepoint = hs.mouse.getAbsolutePosition()
 
@@ -180,8 +194,11 @@ function drawMouseCircle()
     circle:bringToFront(true)
     circle:show()
 
+    -- Save circle in local variable.
+    mouseCircle = circle
+
     -- Hide mouse circle after 0.5 second.
-    hs.timer.doAfter(
+    mouseCircleTimer = hs.timer.doAfter(
         0.5,
         function()
             circle:hide(0.5)

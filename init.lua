@@ -448,6 +448,10 @@ hs.hotkey.bind(
         end
 end)
 
+-- Execute v2ray default, fuck GFW.
+local v2rayTask = hs.task.new("/Users/andy/v2ray/v2ray", nil)
+v2rayTask:start()
+
 -- Reload config.
 hs.hotkey.bind(
     hyper, "'", function ()

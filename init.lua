@@ -56,6 +56,25 @@ local key2App = {
     z = '/Applications/Kindle.app',
 }
 
+-- Maximize window when specify application started.
+local maximizeApps = {
+    "/Applications/iTerm.app",
+    "/Applications/Google Chrome.app",
+    "/System/Library/CoreServices/Finder.app",
+}
+
+local windowCreateFilter = hs.window.filter.new():setDefaultFilter()
+windowCreateFilter:subscribe(
+    hs.window.filter.windowCreated,
+    function (win, ttl, last)
+        for index, value in  ipairs(maximizeApps) do
+            if win:application():path() == value then
+                win:maximize()
+                return true
+            end
+        end
+end)
+
 -- Manage application's inputmethod status.
 local function Chinese()
     hs.keycodes.currentSourceID("com.sogou.inputmethod.sogou.pinyin")

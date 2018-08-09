@@ -2,6 +2,7 @@ hs.loadSpoon("WinWin")
 hs.loadSpoon("WindowGrid")
 hs.loadSpoon("WindowHalfsAndThirds")
 hs.loadSpoon("KSheet")
+hs.loadSpoon("Seal")
 hs.loadSpoon("SpoonInstall")
 
 Install=spoon.SpoonInstall
@@ -483,6 +484,11 @@ hs.hotkey.bind(
         speaker:speak("Offline to reloading...")
         hs.reload()
 end)
+
+-- Use seal instead Alfred.
+spoon.Seal:loadPlugins({"apps"})
+spoon.Seal:bindHotkeys({show={{"alt"}, "Space"}})
+spoon.Seal:start()
 
 -- We put reload notify at end of config, notify popup mean no error in config.
 hs.notify.new({title="Manatee", informativeText="Andy, I am online!"}):send()

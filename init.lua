@@ -1,6 +1,7 @@
 hs.loadSpoon("WinWin")
 hs.loadSpoon("WindowGrid")
 hs.loadSpoon("WindowHalfsAndThirds")
+hs.loadSpoon("KSheet")
 hs.loadSpoon("SpoonInstall")
 
 Install=spoon.SpoonInstall
@@ -307,6 +308,31 @@ Install:andUse("WindowGrid",
                  hotkeys = {show_grid = {hyper, ","}},
                  start = true
                })
+
+local ksheetIsShow = false
+local ksheetAppPath = ""
+
+hs.hotkey.bind(hyper, "M", function ()
+    local currentAppPath = window.focusedWindow():application():path()
+
+    -- Toggle ksheet window if cache path equal current app path.
+    if ksheetAppPath == currentAppPath then
+        if ksheetIsShow then
+           spoon.KSheet:hide()
+           ksheetIsShow = false
+        else
+           spoon.KSheet:show()
+           ksheetIsShow = true
+        end
+    -- Show app's keystroke if cache path not equal current app path.
+    else
+       spoon.KSheet:show()
+       ksheetIsShow = true
+
+       ksheetAppPath = currentAppPath
+    end
+
+end)
 
 -- Reload config.
 hs.hotkey.bind(hyper, "'", function ()

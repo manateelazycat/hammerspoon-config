@@ -48,13 +48,41 @@ local key2App = {
     k = '/Applications/Google Chrome.app',
     l = '/System/Library/CoreServices/Finder.app',
     x = '/Applications/QQMusic.app',
+    c = '/Applications/Kindle.app',
     n = '/Applications/NeteaseMusic.app',
-    s = '/Applications/System Preferences.app',
     w = '/Applications/WeChat.app',
     e = '/Applications/企业微信.app',
+    s = '/Applications/System Preferences.app',
     d = '/Applications/Dash.app',
-    z = '/Applications/Kindle.app',
 }
+
+-- Show launch application's keystroke.
+local showAppKeystrokeAlertId = ""
+
+local function showAppKeystroke()
+    -- Show application keystroke if alert id is empty.
+    if showAppKeystrokeAlertId == "" then
+        local keystroke = ""
+        local keystrokeString = ""
+        for key, app in pairs(key2App) do
+            keystrokeString = string.format("%-10s%s", key:upper(), app:match("^.+/(.+)$"):gsub(".app", ""))
+
+            if keystroke == "" then
+                keystroke = keystrokeString
+            else
+                keystroke = keystroke .. "\n" .. keystrokeString
+            end
+        end
+
+        showAppKeystrokeAlertId = hs.alert.show(keystroke, hs.alert.defaultStyle, hs.screen.mainScreen(), 10)
+    -- Otherwise hide keystroke alert.
+    else
+	hs.alert.closeSpecific(showAppKeystrokeAlertId)
+	showAppKeystrokeAlertId = ""
+    end
+end
+
+hs.hotkey.bind(hyper, "z", showAppKeystroke)
 
 -- Maximize window when specify application started.
 local maximizeApps = {
@@ -67,7 +95,7 @@ local windowCreateFilter = hs.window.filter.new():setDefaultFilter()
 windowCreateFilter:subscribe(
     hs.window.filter.windowCreated,
     function (win, ttl, last)
-        for index, value in  ipairs(maximizeApps) do
+        for index, value in ipairs(maximizeApps) do
             if win:application():path() == value then
                 win:maximize()
                 return true

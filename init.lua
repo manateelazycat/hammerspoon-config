@@ -449,8 +449,22 @@ hs.hotkey.bind(
 end)
 
 -- Execute v2ray default, fuck GFW.
-local v2rayTask = hs.task.new("/Users/andy/v2ray/v2ray", nil)
+local v2rayPath = "/Users/andy/v2ray/v2ray"
+local v2rayTask = hs.task.new(v2rayPath, nil)
 v2rayTask:start()
+
+local function reloadV2ray()
+    hs.notify.new({title="Manatee", informativeText="Reload v2ray"}):send()
+
+    if v2rayTask then
+	v2rayTask.terminate()
+    end
+
+    v2rayTask = hs.task.new(v2rayPath, nil)
+    v2rayTask:start()
+end
+
+hs.hotkey.bind(hyper, "]", reloadV2ray)
 
 -- Reload config.
 hs.hotkey.bind(

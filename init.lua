@@ -141,8 +141,10 @@ function toggleApplication(appPath)
     -- Application running, toggle hide/unhide
     local mainwin = app:mainWindow()
     if mainwin then
-        if true == app:isFrontmost() then
-            mainwin:application():hide()
+        -- Show mouse circle if has focus on target application.
+        if app:isFrontmost() then
+	   drawMouseCircle()
+        -- Focus target application if it not at frontmost.
         else
             mainwin:application():activate(true)
             mainwin:application():unhide()
@@ -150,10 +152,37 @@ function toggleApplication(appPath)
     	end
     else
         -- Start application if application is hide.
-        if true == app:hide() then
+        if app:hide() then
             application.launchOrFocus(appPath)
     	end
     end
+end
+
+function drawMouseCircle()
+   -- Get mouse point.
+    mousepoint = hs.mouse.getAbsolutePosition()
+
+    -- Init circle color and raius.
+    local color = {
+	  ["red"]= 92.0 / 255.0,
+	  ["blue"]= 245.0 / 255.0,
+	  ["green"]= 201.0 / 255.0,
+	  ["alpha"]= 0.8}
+
+    raius = 30
+
+    -- Draw mouse circle.
+    circle = hs.drawing.circle(hs.geometry.rect(mousepoint.x - raius / 2, mousepoint.y - raius / 2, raius, raius))
+    circle:setStroke(false)
+    circle:setFillColor(color)
+    circle:bringToFront(true)
+    circle:show()
+
+    -- Hide mouse circle after 0.5 second.
+    hs.timer.doAfter(0.5, function()
+        circle:hide(0.5)
+        hs.timer.doAfter(0.6, function() circle:delete() end)
+    end)
 end
 
 moveToScreen = function(win, n)

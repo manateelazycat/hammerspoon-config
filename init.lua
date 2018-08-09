@@ -75,10 +75,10 @@ local function showAppKeystroke()
         end
 
         showAppKeystrokeAlertId = hs.alert.show(keystroke, hs.alert.defaultStyle, hs.screen.mainScreen(), 10)
-    -- Otherwise hide keystroke alert.
+        -- Otherwise hide keystroke alert.
     else
-	hs.alert.closeSpecific(showAppKeystrokeAlertId)
-	showAppKeystrokeAlertId = ""
+        hs.alert.closeSpecific(showAppKeystrokeAlertId)
+        showAppKeystrokeAlertId = ""
     end
 end
 
@@ -315,6 +315,12 @@ local caffeinateTrayIcon = hs.menubar.new()
 
 local function caffeinateSetIcon(state)
     caffeinateTrayIcon:setIcon(state and caffeinateOnIcon or caffeinateOffIcon)
+
+    if state then
+        caffeinateTrayIcon:setTooltip("Sleep never sleep")
+    else
+        caffeinateTrayIcon:setTooltip("System will sleep when idle")
+    end
 end
 
 local function toggleCaffeinate()
@@ -457,12 +463,17 @@ local function reloadV2ray()
     hs.notify.new({title="Manatee", informativeText="Reload v2ray"}):send()
 
     if v2rayTask then
-	v2rayTask.terminate()
+        v2rayTask.terminate()
     end
 
     v2rayTask = hs.task.new(v2rayPath, nil)
     v2rayTask:start()
 end
+
+local v2rayTrayIcon = hs.menubar.new()
+v2rayTrayIcon:setTitle("V2ray")
+v2rayTrayIcon:setTooltip("Click to reload V2ray")
+v2rayTrayIcon:setClickCallback(reloadV2ray)
 
 hs.hotkey.bind(hyper, "]", reloadV2ray)
 

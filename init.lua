@@ -429,6 +429,7 @@ Install:andUse(
         start = true
 })
 
+-- Show application keystroke window.
 local ksheetIsShow = false
 local ksheetAppPath = ""
 
@@ -454,6 +455,13 @@ hs.hotkey.bind(
             ksheetAppPath = currentAppPath
         end
 end)
+
+hs.hotkey.new({}, "escape", nil,
+    function()
+        spoon.KSheet:hide()
+        ksheetIsShow = false
+        ksheetAppPath = ""
+end):enable()
 
 -- Execute v2ray default, fuck GFW.
 local v2rayPath = "/Users/andy/v2ray/v2ray"

@@ -175,6 +175,16 @@ function findApplication(appPath)
     return nil
 end
 
+function launchApp(appPath)
+    -- We need use Chrome's remote debug protocol that debug JavaScript code in Emacs.
+    -- So we need launch chrome with --remote-debugging-port argument instead application.launchOrFocus.
+    if appPath == "/Applications/Google Chrome.app" then
+	os.execute("/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 &")
+    else
+	application.launchOrFocus(appPath)
+    end
+end
+
 -- Toggle an application between being the frontmost app, and being hidden
 function toggleApplication(appPath)
     -- Tag app path use for `applicationWatcher'.
@@ -184,7 +194,7 @@ function toggleApplication(appPath)
 
     if not app then
         -- Application not running, launch app
-        application.launchOrFocus(appPath)
+        launchApp(appPath)
         return
     end
 
@@ -203,7 +213,7 @@ function toggleApplication(appPath)
     else
         -- Start application if application is hide.
         if app:hide() then
-            application.launchOrFocus(appPath)
+	    launchApp(appPath)
         end
     end
 end

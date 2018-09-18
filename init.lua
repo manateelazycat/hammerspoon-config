@@ -179,7 +179,7 @@ function launchApp(appPath)
     -- We need use Chrome's remote debug protocol that debug JavaScript code in Emacs.
     -- So we need launch chrome with --remote-debugging-port argument instead application.launchOrFocus.
     if appPath == "/Applications/Google Chrome.app" then
-	os.execute("/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 &")
+	hs.execute("open -a 'Google Chrome' --args '--remote-debugging-port=9222'")
     else
 	application.launchOrFocus(appPath)
     end

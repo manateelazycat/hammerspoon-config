@@ -44,29 +44,29 @@ hs.window.animationDuration = 0 -- don't waste time on animation when resize win
 
 -- Key to launch application.
 local key2App = {
-    h = '/Applications/iTerm.app',
-    j = '/Applications/Emacs.app',
-    k = '/Applications/Google Chrome.app',
-    l = '/System/Library/CoreServices/Finder.app',
-    x = '/Applications/QQMusic.app',
-    c = '/Applications/Kindle.app',
-    n = '/Applications/NeteaseMusic.app',
-    w = '/Applications/WeChat.app',
-    e = '/Applications/企业微信.app',
-    s = '/Applications/System Preferences.app',
-    d = '/Applications/Dash.app',
+    h = {'/Applications/iTerm.app', 'English'},
+    j = {'/Applications/Emacs.app', 'English'},
+    k = {'/Applications/Google Chrome.app', 'English'},
+    l = {'/System/Library/CoreServices/Finder.app', 'English'},
+    x = {'/Applications/QQMusic.app', 'Chinese'},
+    c = {'/Applications/Kindle.app', 'English'},
+    n = {'/Applications/NeteaseMusic.app', 'Chinese'},
+    w = {'/Applications/WeChat.app', 'Chinese'},
+    e = {'/Applications/企业微信.app', 'Chinese'},
+    s = {'/Applications/System Preferences.app', 'English'},
+    d = {'/Applications/Dash.app', 'English'},
 }
 
 -- Show launch application's keystroke.
 local showAppKeystrokeAlertId = ""
 
 local function showAppKeystroke()
-    -- Show application keystroke if alert id is empty.
     if showAppKeystrokeAlertId == "" then
+        -- Show application keystroke if alert id is empty.
         local keystroke = ""
         local keystrokeString = ""
         for key, app in pairs(key2App) do
-            keystrokeString = string.format("%-10s%s", key:upper(), app:match("^.+/(.+)$"):gsub(".app", ""))
+            keystrokeString = string.format("%-10s%s", key:upper(), app[1]:match("^.+/(.+)$"):gsub(".app", ""))
 
             if keystroke == "" then
                 keystroke = keystrokeString
@@ -76,8 +76,8 @@ local function showAppKeystroke()
         end
 
         showAppKeystrokeAlertId = hs.alert.show(keystroke, hs.alert.defaultStyle, hs.screen.mainScreen(), 10)
-        -- Otherwise hide keystroke alert.
     else
+        -- Otherwise hide keystroke alert.
         hs.alert.closeSpecific(showAppKeystrokeAlertId)
         showAppKeystrokeAlertId = ""
     end
@@ -113,23 +113,6 @@ local function English()
     hs.keycodes.currentSourceID("com.apple.keylayout.ABC")
 end
 
-local function set_app_input_method(app_name, set_input_method_function, event)
-    event = event or hs.window.filter.windowFocused
-
-    hs.window.filter.new(app_name)
-        :subscribe(event, function()
-                       set_input_method_function()
-                  end)
-end
-
-set_app_input_method('Hammerspoon', English, hs.window.filter.windowCreated)
-set_app_input_method('Spotlight', English, hs.window.filter.windowCreated)
-set_app_input_method('Alfred', English, hs.window.filter.windowCreated)
-set_app_input_method('Emacs', English)
-set_app_input_method('iTerm2', English)
-set_app_input_method('Google Chrome', English)
-set_app_input_method('WeChat', Chinese)
-
 -- Build better app switcher.
 switcher = hs.window.switcher.new(
     hs.window.filter.new()
@@ -143,8 +126,31 @@ switcher = hs.window.switcher.new(
     }
 )
 
-hs.hotkey.bind("alt", "tab", function() switcher:next() end)
-hs.hotkey.bind("alt-shift", "tab", function() switcher:previous() end)
+hs.hotkey.bind("alt", "tab", function()
+		   switcher:next()
+		   updateFocusAppInputMethod()
+end)
+hs.hotkey.bind("alt-shift", "tab", function()
+		   switcher:previous()
+		   updateFocusAppInputMethod()
+end)
+
+function updateFocusAppInputMethod()
+    for key, app in pairs(key2App) do
+	local appPath = app[1]
+	local inputmethod = app[2]
+
+	if window.focusedWindow():application():path() == appPath then
+	    if inputmethod == 'English' then
+		English()
+	    else
+		Chinese()
+	    end
+
+	    break
+	end
+    end
+end
 
 -- Handle cursor focus and application's screen manage.
 startAppPath = ""
@@ -179,41 +185,54 @@ function launchApp(appPath)
     -- We need use Chrome's remote debug protocol that debug JavaScript code in Emacs.
     -- So we need launch chrome with --remote-debugging-port argument instead application.launchOrFocus.
     if appPath == "/Applications/Google Chrome.app" then
-	hs.execute("open -a 'Google Chrome' --args '--remote-debugging-port=9222'")
+        hs.execute("open -a 'Google Chrome' --args '--remote-debugging-port=9222'")
     else
-	application.launchOrFocus(appPath)
+        application.launchOrFocus(appPath)
     end
 end
 
 -- Toggle an application between being the frontmost app, and being hidden
-function toggleApplication(appPath)
+function toggleApplication(app)
+    local appPath = app[1]
+    local inputMethod = app[2]
+
     -- Tag app path use for `applicationWatcher'.
     startAppPath = appPath
 
     local app = findApplication(appPath)
+    local setInputMethod = true
 
     if not app then
         -- Application not running, launch app
         launchApp(appPath)
-        return
+    else
+        -- Application running, toggle hide/unhide
+        local mainwin = app:mainWindow()
+        if mainwin then
+            if app:isFrontmost() then
+                -- Show mouse circle if has focus on target application.
+                drawMouseCircle()
+
+                setInputMethod = false
+            else
+                -- Focus target application if it not at frontmost.
+                mainwin:application():activate(true)
+                mainwin:application():unhide()
+                mainwin:focus()
+            end
+        else
+            -- Start application if application is hide.
+            if app:hide() then
+                launchApp(appPath)
+            end
+        end
     end
 
-    -- Application running, toggle hide/unhide
-    local mainwin = app:mainWindow()
-    if mainwin then
-        -- Show mouse circle if has focus on target application.
-        if app:isFrontmost() then
-            drawMouseCircle()
-            -- Focus target application if it not at frontmost.
+    if setInputMethod then
+        if inputMethod == 'English' then
+            English()
         else
-            mainwin:application():activate(true)
-            mainwin:application():unhide()
-            mainwin:focus()
-        end
-    else
-        -- Start application if application is hide.
-        if app:hide() then
-	    launchApp(appPath)
+            Chinese()
         end
     end
 end

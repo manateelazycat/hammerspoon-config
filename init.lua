@@ -55,6 +55,7 @@ local key2App = {
     e = {'/Applications/企业微信.app', 'Chinese'},
     s = {'/Applications/System Preferences.app', 'English'},
     d = {'/Applications/Dash.app', 'English'},
+    o = {'/Applications/MindNode.app', 'Chinese'},
 }
 
 -- Show launch application's keystroke.

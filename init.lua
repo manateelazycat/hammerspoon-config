@@ -56,6 +56,7 @@ local key2App = {
     s = {'/Applications/System Preferences.app', 'English'},
     d = {'/Applications/Dash.app', 'English'},
     b = {'/Applications/MindNode.app', 'Chinese'},
+    p = {'/Applications/Preview.app', 'Chinese'},
 }
 
 -- Show launch application's keystroke.

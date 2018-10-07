@@ -310,11 +310,11 @@ moveToScreen = function(win, n, showNotify)
 	    hs.alert.show("No enough screens " .. #screens)
 	end
     else
-        local toWin = hs.screen.allScreens()[n]:name()
+        local toScreen = hs.screen.allScreens()[n]:name()
 	if showNotify then
-	    hs.alert.show("Move " .. win:application():name() .. " to " .. toWin)
+	    hs.alert.show("Move " .. win:application():name() .. " to " .. toScreen)
 	end
-        hs.layout.apply({{nil, win:title(), toWin, hs.layout.maximized, nil, nil}})
+        hs.layout.apply({{nil, win:title(), toScreen, hs.layout.maximized, nil, nil}})
     end
 end
 

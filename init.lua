@@ -44,19 +44,19 @@ hs.window.animationDuration = 0 -- don't waste time on animation when resize win
 
 -- Key to launch application.
 local key2App = {
-    h = {'/Applications/iTerm.app', 'English'},
-    j = {'/Applications/Emacs.app', 'English'},
-    k = {'/Applications/Google Chrome.app', 'English'},
-    l = {'/System/Library/CoreServices/Finder.app', 'English'},
-    x = {'/Applications/QQMusic.app', 'Chinese'},
-    c = {'/Applications/Kindle.app', 'English'},
-    n = {'/Applications/NeteaseMusic.app', 'Chinese'},
-    w = {'/Applications/WeChat.app', 'Chinese'},
-    e = {'/Applications/企业微信.app', 'Chinese'},
-    s = {'/Applications/System Preferences.app', 'English'},
-    d = {'/Applications/Dash.app', 'English'},
-    b = {'/Applications/MindNode.app', 'Chinese'},
-    p = {'/Applications/Preview.app', 'Chinese'},
+    h = {'/Applications/iTerm.app', 'English', 2},
+    j = {'/Applications/Emacs.app', 'English', 2},
+    k = {'/Applications/Google Chrome.app', 'English', 1},
+    l = {'/System/Library/CoreServices/Finder.app', 'English', 1},
+    x = {'/Applications/QQMusic.app', 'Chinese', 1},
+    c = {'/Applications/Kindle.app', 'English', 2},
+    n = {'/Applications/NeteaseMusic.app', 'Chinese', 1},
+    w = {'/Applications/WeChat.app', 'Chinese', 1},
+    e = {'/Applications/企业微信.app', 'Chinese', 1},
+    s = {'/Applications/System Preferences.app', 'English', 1},
+    d = {'/Applications/Dash.app', 'English', 1},
+    b = {'/Applications/MindNode.app', 'Chinese', 1},
+    p = {'/Applications/Preview.app', 'Chinese', 1},
 }
 
 -- Show launch application's keystroke.
@@ -129,28 +129,28 @@ switcher = hs.window.switcher.new(
 )
 
 hs.hotkey.bind("alt", "tab", function()
-		   switcher:next()
-		   updateFocusAppInputMethod()
+                   switcher:next()
+                   updateFocusAppInputMethod()
 end)
 hs.hotkey.bind("alt-shift", "tab", function()
-		   switcher:previous()
-		   updateFocusAppInputMethod()
+                   switcher:previous()
+                   updateFocusAppInputMethod()
 end)
 
 function updateFocusAppInputMethod()
     for key, app in pairs(key2App) do
-	local appPath = app[1]
-	local inputmethod = app[2]
+        local appPath = app[1]
+        local inputmethod = app[2]
 
-	if window.focusedWindow():application():path() == appPath then
-	    if inputmethod == 'English' then
-		English()
-	    else
-		Chinese()
-	    end
+        if window.focusedWindow():application():path() == appPath then
+            if inputmethod == 'English' then
+                English()
+            else
+                Chinese()
+            end
 
-	    break
-	end
+            break
+        end
     end
 end
 
@@ -190,6 +190,24 @@ function launchApp(appPath)
         hs.execute("open -a 'Google Chrome' --args '--remote-debugging-port=9222'")
     else
         application.launchOrFocus(appPath)
+    end
+
+    -- Move the application's window to the specified screen.
+    for key, app in pairs(key2App) do
+        local path = app[1]
+        local screenNumber = app[3]
+
+        if appPath == path then
+            hs.timer.doAfter(
+                1,
+                function()
+                    local app = findApplication(appPath)
+                    local appWindow = app:mainWindow()
+
+		    moveToScreen(appWindow, screenNumber, false)
+            end)
+            break
+        end
     end
 end
 
@@ -285,13 +303,17 @@ function drawMouseCircle()
     end)
 end
 
-moveToScreen = function(win, n)
+moveToScreen = function(win, n, showNotify)
     local screens = hs.screen.allScreens()
     if n > #screens then
-        hs.alert.show("No enough screens " .. #screens)
+	if showNotify then
+	    hs.alert.show("No enough screens " .. #screens)
+	end
     else
         local toWin = hs.screen.allScreens()[n]:name()
-        hs.alert.show("Move " .. win:application():name() .. " to " .. toWin)
+	if showNotify then
+	    hs.alert.show("Move " .. win:application():name() .. " to " .. toWin)
+	end
         hs.layout.apply({{nil, win:title(), toWin, hs.layout.maximized, nil, nil}})
     end
 end
@@ -435,13 +457,13 @@ end
 hs.hotkey.bind(
     hyper, "1",
     function()
-        moveToScreen(hs.window.focusedWindow(), 1)
+        moveToScreen(hs.window.focusedWindow(), 1, true)
 end)
 
 hs.hotkey.bind(
     hyper, "2",
     function()
-        moveToScreen(hs.window.focusedWindow(), 2)
+        moveToScreen(hs.window.focusedWindow(), 2, true)
 end)
 
 -- Binding key to start plugin.

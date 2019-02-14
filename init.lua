@@ -48,7 +48,6 @@ local key2App = {
     j = {'/Applications/Emacs.app', 'English', 2},
     k = {'/Applications/Google Chrome.app', 'English', 1},
     l = {'/System/Library/CoreServices/Finder.app', 'English', 1},
-    x = {'/Applications/QQMusic.app', 'Chinese', 1},
     c = {'/Applications/Kindle.app', 'English', 2},
     n = {'/Applications/NeteaseMusic.app', 'Chinese', 1},
     w = {'/Applications/WeChat.app', 'Chinese', 1},
@@ -57,6 +56,7 @@ local key2App = {
     d = {'/Applications/Dash.app', 'English', 1},
     b = {'/Applications/MindNode.app', 'Chinese', 1},
     p = {'/Applications/Preview.app', 'Chinese', 2},
+    u = {'/Applications/wechatwebdevtools.app', 'English', 2},
 }
 
 -- Show launch application's keystroke.

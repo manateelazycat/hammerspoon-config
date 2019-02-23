@@ -56,7 +56,7 @@ local key2App = {
     d = {'/Applications/Dash.app', 'English', 1},
     b = {'/Applications/MindNode.app', 'Chinese', 1},
     p = {'/Applications/Preview.app', 'Chinese', 2},
-    u = {'/Applications/wechatwebdevtools.app', 'English', 2},
+    a = {'/Applications/wechatwebdevtools.app', 'English', 2},
 }
 
 -- Show launch application's keystroke.

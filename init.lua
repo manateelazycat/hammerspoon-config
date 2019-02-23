@@ -7,7 +7,7 @@ hs.loadSpoon("SpoonInstall")
 
 Install=spoon.SpoonInstall
 
-local hyper = {'ctrl', 'cmd'}
+local hyper = {'ctrl', 'option'}
 
 local alert = require 'hs.alert'
 local application = require 'hs.application'

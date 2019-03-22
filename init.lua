@@ -57,7 +57,7 @@ local key2App = {
     b = {'/Applications/MindNode.app', 'Chinese', 1},
     p = {'/Applications/Preview.app', 'Chinese', 2},
     a = {'/Applications/wechatwebdevtools.app', 'English', 2},
-    o = {'/Applications/Sketch.app', 'English', 2},
+    m = {'/Applications/Sketch.app', 'English', 2},
 }
 
 -- Show launch application's keystroke.
@@ -488,7 +488,7 @@ local ksheetIsShow = false
 local ksheetAppPath = ""
 
 hs.hotkey.bind(
-    hyper, "M",
+    hyper, "R",
     function ()
         local currentAppPath = window.focusedWindow():application():path()
 

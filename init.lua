@@ -550,14 +550,18 @@ hs.hotkey.bind(hyper, "]", reloadV2ray)
 -- Force system sleep.
 hs.hotkey.bind(hyper, "delete", hs.caffeinate.systemSleep)
 
--- Kill WeChat devetools.
-local function killWechatDevtools()
+-- Restart WeChat devetools.
+local doAfter = require 'hs.timer'.doAfter
+local function restartWechatDevtools()
     -- We need execute killall command twice to kill wechatdevtools.
     hs.execute("killall wechatdevtools")
     hs.execute("killall wechatdevtools")
+    doAfter(2, function ()
+                launchApp("/Applications/wechatwebdevtools.app")
+    end)
 end
 
-hs.hotkey.bind(hyper, "x", killWechatDevtools)
+hs.hotkey.bind(hyper, "x", restartWechatDevtools)
 
 -- Reload config.
 hs.hotkey.bind(

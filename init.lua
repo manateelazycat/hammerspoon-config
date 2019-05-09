@@ -48,15 +48,16 @@ local key2App = {
     j = {'/Applications/Emacs.app', 'English', 2},
     k = {'/Applications/Google Chrome.app', 'English', 1},
     l = {'/System/Library/CoreServices/Finder.app', 'English', 1},
+    f = {'/Applications/Chromium.app', 'English', 1},
     c = {'/Applications/Kindle.app', 'English', 2},
-    n = {'/Applications/NeteaseMusic.app', 'Chinese', 1},
     w = {'/Applications/WeChat.app', 'Chinese', 1},
     e = {'/Applications/企业微信.app', 'Chinese', 1},
-    s = {'/Applications/System Preferences.app', 'English', 1},
-    d = {'/Applications/Dash.app', 'English', 1},
-    b = {'/Applications/MindNode.app', 'Chinese', 1},
-    p = {'/Applications/Preview.app', 'Chinese', 2},
     a = {'/Applications/wechatwebdevtools.app', 'English', 2},
+    d = {'/Applications/Dash.app', 'English', 1},
+    s = {'/Applications/System Preferences.app', 'English', 1},
+    p = {'/Applications/Preview.app', 'Chinese', 2},
+    b = {'/Applications/MindNode.app', 'Chinese', 1},
+    n = {'/Applications/NeteaseMusic.app', 'Chinese', 1},
     m = {'/Applications/Sketch.app', 'English', 2},
 }
 
@@ -92,6 +93,7 @@ hs.hotkey.bind(hyper, "z", showAppKeystroke)
 local maximizeApps = {
     "/Applications/iTerm.app",
     "/Applications/Google Chrome.app",
+    "/Applications/Chromium.app",
     "/System/Library/CoreServices/Finder.app",
 }
 
@@ -189,6 +191,8 @@ function launchApp(appPath)
     -- So we need launch chrome with --remote-debugging-port argument instead application.launchOrFocus.
     if appPath == "/Applications/Google Chrome.app" then
         hs.execute("open -a 'Google Chrome' --args '--remote-debugging-port=9222'")
+    elseif appPath == "/Applications/Chromium.app" then
+        hs.execute("open -a 'Chromium' --args --user-data-dir='/tmp/chrome_dev_test' --disable-web-security")
     else
         application.launchOrFocus(appPath)
     end

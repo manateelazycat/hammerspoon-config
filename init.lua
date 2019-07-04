@@ -1,4 +1,3 @@
-hs.loadSpoon("WinWin")
 hs.loadSpoon("WindowGrid")
 hs.loadSpoon("WindowHalfsAndThirds")
 hs.loadSpoon("KSheet")
@@ -165,7 +164,6 @@ function applicationWatcher(appName, eventType, appObject)
     if (eventType == hs.application.watcher.activated) then
         -- Just adjust cursor postion if app open by user keyboard.
         if appObject:path() == startAppPath then
-            spoon.WinWin:centerCursor()
             startAppPath = ""
         end
     end

@@ -141,17 +141,22 @@ end)
 
 function updateFocusAppInputMethod()
     for key, app in pairs(key2App) do
-        local appPath = app[1]
-        local inputmethod = app[2]
+        -- If app is nil, default use English input status.
+        if app then
+            local appPath = app[1]
+            local inputmethod = app[2]
 
-        if window.focusedWindow():application():path() == appPath then
-            if inputmethod == 'English' then
-                English()
-            else
-                Chinese()
+            if window.focusedWindow():application():path() == appPath then
+                if inputmethod == 'English' then
+                    English()
+                else
+                    Chinese()
+                end
+
+                break
             end
-
-            break
+        else
+            English()
         end
     end
 end
@@ -207,7 +212,7 @@ function launchApp(appPath)
                     local app = findApplication(appPath)
                     local appWindow = app:mainWindow()
 
-		    moveToScreen(appWindow, screenNumber, false)
+                    moveToScreen(appWindow, screenNumber, false)
             end)
             break
         end
@@ -309,14 +314,14 @@ end
 moveToScreen = function(win, n, showNotify)
     local screens = hs.screen.allScreens()
     if n > #screens then
-	if showNotify then
-	    hs.alert.show("No enough screens " .. #screens)
-	end
+        if showNotify then
+            hs.alert.show("No enough screens " .. #screens)
+        end
     else
         local toScreen = hs.screen.allScreens()[n]:name()
-	if showNotify then
-	    hs.alert.show("Move " .. win:application():name() .. " to " .. toScreen)
-	end
+        if showNotify then
+            hs.alert.show("Move " .. win:application():name() .. " to " .. toScreen)
+        end
         hs.layout.apply({{nil, win:title(), toScreen, hs.layout.maximized, nil, nil}})
     end
 end

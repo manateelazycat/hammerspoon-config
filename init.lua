@@ -140,22 +140,17 @@ end)
 
 function updateFocusAppInputMethod()
     for key, app in pairs(key2App) do
-        -- If app is nil, default use English input status.
-        if app then
-            local appPath = app[1]
-            local inputmethod = app[2]
+        local appPath = app[1]
+        local inputmethod = app[2]
 
-            if window.focusedWindow():application():path() == appPath then
-                if inputmethod == 'English' then
-                    English()
-                else
-                    Chinese()
-                end
-
-                break
+        if window.focusedWindow():application():path() == appPath then
+            if inputmethod == 'English' then
+                English()
+            else
+                Chinese()
             end
-        else
-            English()
+
+            break
         end
     end
 end

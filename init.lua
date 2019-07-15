@@ -564,6 +564,13 @@ end
 
 hs.hotkey.bind(hyper, "x", restartWechatDevtools)
 
+-- Kill sip.
+local function killSip()
+    hs.execute("killall Sip")
+end
+
+hs.hotkey.bind(hyper, "v", killSip)
+
 -- Reload config.
 hs.hotkey.bind(
     hyper, "'", function ()
